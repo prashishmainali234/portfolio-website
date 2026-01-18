@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prasis Mainali | Personal Blog</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: #f4f7f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2ecc71, #27ae60);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    nav {
+      background: #222;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    nav ul li a:hover {
+      color: #2ecc71;
+    }
+
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 2.2rem;
+      color: #27ae60;
+    }
+
+    .about, .education, .blog, .contact {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .about p {
+      margin-bottom: 15px;
+    }
+
+    .education ul {
+      list-style: square;
+      margin-left: 20px;
+    }
+
+    .blog-post {
+      margin-bottom: 30px;
+    }
+
+    .blog-post h3 {
+      color: #2ecc71;
+      margin-bottom: 10px;
+    }
+
+    .blog-post p {
+      color: #555;
+    }
+
+    .contact form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .contact input, .contact textarea {
+      padding: 12px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .contact button {
+      background: #27ae60;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .contact button:hover {
+      background: #219150;
+    }
+
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+      nav ul {
+        flex-direction: column;
+      }
+      nav ul li {
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Prasis Mainali</h1>
+    <p>Student | Nature Explorer | Personal Blogger</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#blog">Blog</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section id="about">
+    <div class="section-title">
+      <h2>About Me</h2>
+    </div>
+    <div class="about">
+      <p>Hello! My name is <strong>Prasis Mainali</strong>, and I am from Biratnagar, Nepal. I am currently studying at <strong>Biratnagar International College</strong>.</p>
+      <p>I completed my +2 education from <strong>Merryland College</strong>. I am passionate about learning new technologies, personal growth, and creative thinking.</p>
+      <p>One of my biggest hobbies is exploring greenery and natural places. I love spending time in nature, observing landscapes, and discovering peaceful environments that inspire positivity and creativity.</p>
+      <p>This blog is my personal space where I share my thoughts, experiences, and journeys related to life, education, and nature.</p>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="section-title">
+      <h2>Education</h2>
+    </div>
+    <div class="education">
+      <ul>
+        <li>Currently Studying at Biratnagar International College</li>
+        <li>+2 Completed from Merryland College</li>
+        <li>Schooling from Biratnagar, Nepal</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="blog">
+    <div class="section-title">
+      <h2>My Blog</h2>
+    </div>
+    <div class="blog">
+      <div class="blog-post">
+        <h3>Exploring the Green</h3>
+        <p>Nature gives me peace and energy. Walking through green fields, forests, and quiet places helps me relax and think clearly.</p>
+      </div>
+      <div class="blog-post">
+        <h3>Student Life in Biratnagar</h3>
+        <p>Being a student in Biratnagar has taught me discipline, responsibility, and the importance of balancing education with personal interests.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-title">
+      <h2>Contact Me</h2>
+    </div>
+    <div class="contact">
+      <form>
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea rows="5" placeholder="Your Message"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Prasis Mainali | Personal Blog Website</p>
+  </footer>
+
+</body>
+</html>
