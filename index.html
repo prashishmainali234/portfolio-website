@@ -1,231 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prasis Mainali | Personal Blog</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prasis Mainali | Portfolio</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;600;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
+    :root {
+      --bg-color: #ffffff;
+      --text-primary: #111111;
+      --text-secondary: #444444;
+      --accent: #111;
+      --card-bg: #f5f5f5;
+      --border-color: #e5e5e5;
+      --cursor-size: 20px;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      cursor: none;
+      /* Hide default cursor for custom one */
     }
 
     body {
-      background: #f4f7f9;
-      color: #333;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
-    header {
-      background: linear-gradient(135deg, #2ecc71, #27ae60);
-      color: white;
-      padding: 60px 20px;
-      text-align: center;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      color: var(--text-primary);
     }
 
-    header h1 {
-      font-size: 3rem;
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.3s ease;
     }
 
-    header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
+    /* --- Custom Cursor --- */
+    .cursor {
+      width: var(--cursor-size);
+      height: var(--cursor-size);
+      border: 1px solid #888888;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, background-color 0.3s;
+      mix-blend-mode: difference;
     }
 
+    .cursor.hovered {
+      width: 50px;
+      height: 50px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: transparent;
+    }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* --- Navigation --- */
     nav {
-      background: #222;
-      padding: 10px 0;
-      position: sticky;
-      top: 0;
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    nav ul {
+    .logo {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav-links a {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.5rem;
+      cursor: none;
+      /* Let custom cursor handle hovering */
+    }
+
+    /* --- Hero Section --- */
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 50px;
+      position: relative;
+    }
+
+    .hero-content {
+      flex: 1;
+    }
+
+    .hero-image {
+      flex: 1;
       display: flex;
       justify-content: center;
-      list-style: none;
+      align-items: center;
     }
 
-    nav ul li {
-      margin: 0 15px;
+    .hero-image img {
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: transform 0.5s ease;
     }
 
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
+    .hero-image:hover img {
+      transform: scale(1.05);
     }
 
-    nav ul li a:hover {
-      color: #2ecc71;
+    .hero-phone {
+      margin-top: 15px;
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
     }
 
+    @media (max-width: 768px) {
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        justify-content: center;
+        padding-top: 50px;
+      }
+
+      .hero-image img {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 8rem);
+      /* Responsive giant text */
+      line-height: 1;
+      margin-bottom: 2rem;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--text-secondary);
+      font-size: 0.5em;
+      /* 50% of parent h1 */
+      font-weight: 400;
+      margin-top: 10px;
+      letter-spacing: 0;
+    }
+
+    .hero-desc {
+      max-width: 500px;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    /* --- Section Styling --- */
     section {
-      padding: 60px 20px;
-      max-width: 1000px;
-      margin: auto;
+      padding: 100px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .section-title {
+      font-size: 3rem;
+      letter-spacing: -1px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.9rem;
+    }
+
+    /* --- About Grid --- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .about-text p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: black;
+      font-weight: bold;
+    }
+
+    .profile-img-container {
+      width: 100%;
+      height: 500px;
+      background: var(--card-bg);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .profile-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%);
+      transition: filter 0.5s ease;
+    }
+
+    .profile-img-container:hover img {
+      filter: grayscale(0%);
+    }
+
+    /* --- Experience/Education List --- */
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .experience-item {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--border-color);
+      transition: padding 0.3s ease;
+    }
+
+    .experience-item:hover {
+      padding: 30px 20px;
+      /* Indent on hover */
+      background: #111;
+    }
+
+    .exp-year {
+      color: var(--text-secondary);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 600;
+    }
+
+    .exp-role {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .exp-company {
+      text-align: right;
+      color: var(--text-secondary);
+    }
+
+    /* --- Projects/Blog Grid --- */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 40px;
+    }
+
+    .project-card {
+      /* group: project; removed invalid property */
+      position: relative;
+    }
+
+    .project-img {
+      width: 100%;
+      height: 300px;
+      /* Placeholder Aspect Ratio */
+      background: var(--card-bg);
+      margin-bottom: 20px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-secondary);
+      font-size: 2rem;
+    }
+
+    .project-img i {
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-img i {
+      transform: scale(1.1);
+      color: var(--text-primary);
+    }
+
+    .project-info h3 {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .project-info p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* --- Footer --- */
+    footer {
+      padding: 100px 0 50px 0;
+      border-top: 1px solid var(--border-color);
       text-align: center;
+    }
+
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
       margin-bottom: 40px;
     }
 
-    .section-title h2 {
-      font-size: 2.2rem;
-      color: #27ae60;
+    .footer-socials a {
+      font-size: 1.5rem;
+      color: var(--text-secondary);
     }
 
-    .about, .education, .blog, .contact {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    .footer-socials a:hover {
+      color: var(--text-primary);
+      transform: translateY(-5px);
     }
 
-    .about p {
-      margin-bottom: 15px;
+    .footer-copy {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
     }
 
-    .education ul {
-      list-style: square;
-      margin-left: 20px;
-    }
+    /* --- Animations --- */
+    @keyframes bounce {
 
-    .blog-post {
-      margin-bottom: 30px;
-    }
-
-    .blog-post h3 {
-      color: #2ecc71;
-      margin-bottom: 10px;
-    }
-
-    .blog-post p {
-      color: #555;
-    }
-
-    .contact form {
-      display: grid;
-      gap: 15px;
-    }
-
-    .contact input, .contact textarea {
-      padding: 12px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .contact button {
-      background: #27ae60;
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .contact button:hover {
-      background: #219150;
-    }
-
-    footer {
-      background: #222;
-      color: white;
-      text-align: center;
-      padding: 20px;
-      margin-top: 40px;
-    }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 2.2rem;
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
       }
-      nav ul {
-        flex-direction: column;
+
+      40% {
+        transform: translateY(-10px);
       }
-      nav ul li {
-        margin: 10px 0;
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* Fade Up Utility */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        /* Simple hide for mobile for now, can expand later */
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .experience-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .exp-company {
+        text-align: left;
+      }
+
+      .hero h1 span {
+        font-size: 0.4em;
       }
     }
   </style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Prasis Mainali</h1>
-    <p>Student | Nature Explorer | Personal Blogger</p>
-  </header>
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
 
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#blog">Blog</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <div class="container">
 
-  <section id="about">
-    <div class="section-title">
-      <h2>About Me</h2>
-    </div>
-    <div class="about">
-      <p>Hello! My name is <strong>Prasis Mainali</strong>, and I am from Biratnagar, Nepal. I am currently studying at <strong>Biratnagar International College</strong>.</p>
-      <p>I completed my +2 education from <strong>Merryland College</strong>. I am passionate about learning new technologies, personal growth, and creative thinking.</p>
-      <p>One of my biggest hobbies is exploring greenery and natural places. I love spending time in nature, observing landscapes, and discovering peaceful environments that inspire positivity and creativity.</p>
-      <p>This blog is my personal space where I share my thoughts, experiences, and journeys related to life, education, and nature.</p>
-    </div>
-  </section>
+    <!-- Navigation -->
+    <nav>
+      <a href="#" class="logo hover-target">Prasis Mainali.</a>
 
-  <section id="education">
-    <div class="section-title">
-      <h2>Education</h2>
-    </div>
-    <div class="education">
-      <ul>
-        <li>Currently Studying at Biratnagar International College</li>
-        <li>+2 Completed from Merryland College</li>
-        <li>Schooling from Biratnagar, Nepal</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="blog">
-    <div class="section-title">
-      <h2>My Blog</h2>
-    </div>
-    <div class="blog">
-      <div class="blog-post">
-        <h3>Exploring the Green</h3>
-        <p>Nature gives me peace and energy. Walking through green fields, forests, and quiet places helps me relax and think clearly.</p>
+      <div class="nav-links">
+        <a href="#about" class="hover-target">About</a>
+        <a href="#experience" class="hover-target">Experience</a>
+        <a href="#blog" class="hover-target">Blog</a>
       </div>
-      <div class="blog-post">
-        <h3>Student Life in Biratnagar</h3>
-        <p>Being a student in Biratnagar has taught me discipline, responsibility, and the importance of balancing education with personal interests.</p>
+
+      <div class="hamburger hover-target">
+        <i class="fas fa-bars"></i>
       </div>
-    </div>
-  </section>
+    </nav>
 
-  <section id="contact">
-    <div class="section-title">
-      <h2>Contact Me</h2>
-    </div>
-    <div class="contact">
-      <form>
-        <input type="text" placeholder="Your Name" required />
-        <input type="email" placeholder="Your Email" required />
-        <textarea rows="5" placeholder="Your Message"></textarea>
-        <button type="submit">Send Message</button>
-      </form>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <header class="hero">
+      <div class="hero-content">
+        <h1 class="fade-up">
+          Prasis Mainali
+          <span>A Student Of BIC</span>
+        </h1>
 
-  <footer>
-    <p>© 2026 Prasis Mainali | Personal Blog Website</p>
-  </footer>
+        <div class="hero-phone fade-up" style="transition-delay: 0.1s;">
+          <i class="fas fa-phone-alt"></i> +977 9702510568
+        </div>
+        <p class="hero-desc fade-up" style="transition-delay: 0.1s;">
+          Bridging the gap between technology and nature. Creating digital experiences that feel organic and intuitive.
+        </p>
 
+        <div class="scroll-indicator fade-up" style="transition-delay: 0.3s;">
+          Scroll Down <i class="fas fa-arrow-down" style="margin-left: 10px;"></i>
+        </div>
+      </div>
+
+      <div class="hero-image fade-up" style="transition-delay: 0.2s;">
+        <img src="../assets/images/prasis-profile.jpg" alt="Prasis Mainali">
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about">
+      <div class="section-header fade-up">
+        <h2 class="section-title">About Me</h2>
+        <span class="section-subtitle">Who I Am</span>
+      </div>
+
+      <div class="about-grid fade-up">
+        <div class="about-text">
+          <p>Hello! I'm <strong>Prasis</strong>, a student based in Biratnagar, Nepal. I enjoy creating things that live
+            on the internet, whether that be websites, applications, or anything in between.</p>
+          <p>Currently, I am pursuing my studies at <strong>Biratnagar International College</strong>. My journey
+            started at Merryland College where I completed my +2 education.</p>
+          <p>Beyond the screen, I am a passionate <strong>Nature Explorer</strong>. I find peace in greenery and
+            landscapes, which often inspires my creative thinking in technology.</p>
+        </div>
+
+        <div class="profile-img-container hover-target">
+          <!-- Using the parent directory path as fixed previously -->
+          <img src="../assets/images/prasis-profile.jpg" alt="Prasis Mainali">
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience / Education -->
+    <section id="experience">
+      <div class="section-header fade-up">
+        <h2 class="section-title">Journey</h2>
+        <span class="section-subtitle">Education & Career</span>
+      </div>
+
+      <div class="experience-list fade-up">
+        <div class="experience-item hover-target">
+          <span class="exp-year">Present</span>
+          <span class="exp-role">Bachelor's Degree (CSIT)</span>
+          <span class="exp-company">Biratnagar International College</span>
+        </div>
+        <div class="experience-item hover-target">
+          <span class="exp-year">2023</span>
+          <span class="exp-role">Higher Secondary (+2)</span>
+          <span class="exp-company">Adarsha Secondary School</span>
+        </div>
+        <div class="experience-item hover-target">
+          <span class="exp-year">2021</span>
+          <span class="exp-role">Secondary Schooling</span>
+          <span class="exp-company">Biratnagar, Nepal</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog / Selected Work -->
+    <section id="blog">
+      <div class="section-header fade-up">
+        <h2 class="section-title">Selected Notes</h2>
+        <span class="section-subtitle">Blog & Thoughts</span>
+      </div>
+
+      <div class="project-grid fade-up">
+        <article class="project-card hover-target">
+          <div class="project-img">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <div class="project-info">
+            <h3>Exploring the Green</h3>
+            <p>Nature's influence on digital design patterns.</p>
+          </div>
+        </article>
+
+        <article class="project-card hover-target">
+          <div class="project-img">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="project-info">
+            <h3>Student Life in Biratnagar</h3>
+            <p>Balancing code, culture, and college.</p>
+          </div>
+        </article>
+
+        <article class="project-card hover-target">
+          <div class="project-img">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <div class="project-info">
+            <h3>Tech & Nature</h3>
+            <p>Why sustainable tech is the future.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-socials fade-up">
+        <a href="https://www.facebook.com/share/1PvVefXtPV/?mibextid=wwXIfr" target="_blank" class="hover-target"><i
+            class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/prashish_mainali?igsh=Z3U0c2h6OGMwNjh3&utm_source=qr" target="_blank"
+          class="hover-target"><i class="fab fa-instagram"></i></a>
+      </div>
+      <p class="footer-copy fade-up">&copy; 2026 Prasis Mainali. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // --- Custom Cursor Logic ---
+    const cursor = document.getElementById('cursor');
+    const hoverTargets = document.querySelectorAll('.hover-target');
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+
+    hoverTargets.forEach(target => {
+      target.addEventListener('mouseenter', () => {
+        cursor.classList.add('hovered');
+      });
+      target.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hovered');
+      });
+    });
+
+    // --- Intersection Observer for Fade Up ---
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+
+  <!-- Tawk.to Live Chat Script -->
+  <script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+      var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = 'https://embed.tawk.to/6986cef376ad761c40db5798/1jgr9gq86';
+      s1.charset = 'UTF-8';
+      s1.setAttribute('crossorigin', '*');
+      s0.parentNode.insertBefore(s1, s0);
+    })();
+  </script>
 </body>
+
 </html>
