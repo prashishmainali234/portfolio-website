@@ -35,12 +35,24 @@
       /* Hide default cursor for custom one */
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       background-color: var(--bg-color);
       color: var(--text-primary);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      background: linear-gradient(-45deg, #ffffff, #f0f0f0, #e0e0e0, #ffffff);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    ::selection {
+      background: var(--text-primary);
+      color: var(--bg-color);
     }
 
     h1,
@@ -195,20 +207,42 @@
 
     .hero h1 {
       font-size: clamp(2.5rem, 5vw, 4.5rem);
-      /* Responsive giant text */
       line-height: 1;
       margin-bottom: 2rem;
       letter-spacing: -2px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
 
-    .hero h1 span {
+    .hero-title-row {
+      display: block;
+      overflow: hidden;
+      /* Mask for reveal */
+    }
+
+    .hero-title-row span {
+      display: inline-block;
+      transform: translateY(100%);
+      opacity: 0;
+      animation: revealText 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+    }
+
+    .hero-subtitle-wrapper {
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .hero-subtitle-wrapper span {
       display: block;
       color: var(--text-secondary);
       font-size: 0.5em;
-      /* 50% of parent h1 */
+      /* relative to H1 */
       font-weight: 400;
-      margin-top: 10px;
       letter-spacing: 0;
+      transform: translateY(100%);
+      opacity: 0;
+      animation: revealText 0.8s cubic-bezier(0.77, 0, 0.175, 1) forwards;
     }
 
     .hero-desc {
@@ -266,8 +300,17 @@
       align-items: start;
     }
 
+    /* --- About Grid --- */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
     .about-text p {
-      margin-bottom: 2rem;
+      margin-bottom: 0px;
+      /* Reset because mask handles spacing */
       font-size: 1.1rem;
       color: black;
       font-weight: bold;
@@ -405,6 +448,20 @@
     }
 
     /* --- Animations --- */
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
     @keyframes bounce {
 
       0%,
@@ -424,15 +481,70 @@
       }
     }
 
+    @keyframes revealText {
+      from {
+        clip-path: inset(0 100% 0 0);
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        clip-path: inset(0 0 0 0);
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
     /* Fade Up Utility */
     .fade-up {
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.8s ease;
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
     }
 
     .fade-up.visible {
       opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Stagger Utilities */
+    .stagger-delay-1 {
+      transition-delay: 0.1s;
+    }
+
+    .stagger-delay-2 {
+      transition-delay: 0.2s;
+    }
+
+    .stagger-delay-3 {
+      transition-delay: 0.3s;
+    }
+
+    .stagger-delay-4 {
+      transition-delay: 0.4s;
+    }
+
+    .stagger-delay-5 {
+      transition-delay: 0.5s;
+    }
+
+    /* --- General Text Reveal --- */
+    .text-reveal-mask {
+      overflow: hidden;
+      display: block;
+      /* Ensures mask works for block elements */
+    }
+
+    .text-reveal-content {
+      display: block;
+      transform: translateY(100%);
+      transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+      /* Premium ease */
+      opacity: 1;
+      /* Override default if needed */
+    }
+
+    .text-reveal-mask.visible .text-reveal-content {
       transform: translateY(0);
     }
 
@@ -492,19 +604,24 @@
     <!-- Hero Section -->
     <header class="hero">
       <div class="hero-content">
-        <h1 class="fade-up">
-          Prasis Mainali
-          <span>A Student Of BIC</span>
+        <h1>
+          <span class="hero-title-row">
+            <span style="animation-delay: 0s;">Prasis</span>
+            <span style="animation-delay: 0.1s;">Mainali</span>
+          </span>
+          <span class="hero-subtitle-wrapper">
+            <span style="animation-delay: 0.3s;">A Student Of BIC</span>
+          </span>
         </h1>
 
-        <div class="hero-phone fade-up" style="transition-delay: 0.1s;">
+        <div class="hero-phone fade-up stagger-delay-1">
           <i class="fas fa-phone-alt"></i> +977 9702510568
         </div>
-        <p class="hero-desc fade-up" style="transition-delay: 0.1s;">
+        <p class="hero-desc fade-up stagger-delay-2">
           Bridging the gap between technology and nature. Creating digital experiences that feel organic and intuitive.
         </p>
 
-        <div class="scroll-indicator fade-up" style="transition-delay: 0.3s;">
+        <div class="scroll-indicator fade-up stagger-delay-3">
           Scroll Down <i class="fas fa-arrow-down" style="margin-left: 10px;"></i>
         </div>
       </div>
@@ -516,19 +633,32 @@
 
     <!-- About Section -->
     <section id="about">
-      <div class="section-header fade-up">
-        <h2 class="section-title">About Me</h2>
-        <span class="section-subtitle">Who I Am</span>
+      <div class="section-header">
+        <div class="text-reveal-mask">
+          <h2 class="section-title text-reveal-content">About Me</h2>
+        </div>
+        <div class="text-reveal-mask">
+          <span class="section-subtitle text-reveal-content">Who I Am</span>
+        </div>
       </div>
 
       <div class="about-grid fade-up">
         <div class="about-text">
-          <p>Hello! I'm <strong>Prasis</strong>, a student based in Biratnagar, Nepal. I enjoy creating things that live
-            on the internet, whether that be websites, applications, or anything in between.</p>
-          <p>Currently, I am pursuing my studies at <strong>Biratnagar International College</strong>. My journey
-            started at Merryland College where I completed my +2 education.</p>
-          <p>Beyond the screen, I am a passionate <strong>Nature Explorer</strong>. I find peace in greenery and
-            landscapes, which often inspires my creative thinking in technology.</p>
+          <div class="text-reveal-mask" style="margin-bottom: 2rem;">
+            <p class="text-reveal-content">Hello! I'm <strong>Prasis</strong>, a student based in Biratnagar, Nepal. I
+              enjoy creating things that live
+              on the internet, whether that be websites, applications, or anything in between.</p>
+          </div>
+          <div class="text-reveal-mask" style="margin-bottom: 2rem;">
+            <p class="text-reveal-content">Currently, I am pursuing my studies at <strong>Biratnagar International
+                College</strong>. My journey
+              started at Merryland College where I completed my +2 education.</p>
+          </div>
+          <div class="text-reveal-mask" style="margin-bottom: 2rem;">
+            <p class="text-reveal-content">Beyond the screen, I am a passionate <strong>Nature Explorer</strong>. I find
+              peace in greenery and
+              landscapes, which often inspires my creative thinking in technology.</p>
+          </div>
         </div>
 
         <div class="profile-img-container hover-target">
@@ -540,9 +670,13 @@
 
     <!-- Experience / Education -->
     <section id="experience">
-      <div class="section-header fade-up">
-        <h2 class="section-title">Journey</h2>
-        <span class="section-subtitle">Education & Career</span>
+      <div class="section-header">
+        <div class="text-reveal-mask">
+          <h2 class="section-title text-reveal-content">Journey</h2>
+        </div>
+        <div class="text-reveal-mask">
+          <span class="section-subtitle text-reveal-content">Education & Career</span>
+        </div>
       </div>
 
       <div class="experience-list fade-up">
@@ -566,9 +700,13 @@
 
     <!-- Blog / Selected Work -->
     <section id="blog">
-      <div class="section-header fade-up">
-        <h2 class="section-title">Selected Notes</h2>
-        <span class="section-subtitle">Blog & Thoughts</span>
+      <div class="section-header">
+        <div class="text-reveal-mask">
+          <h2 class="section-title text-reveal-content">Selected Notes</h2>
+        </div>
+        <div class="text-reveal-mask">
+          <span class="section-subtitle text-reveal-content">Blog & Thoughts</span>
+        </div>
       </div>
 
       <div class="project-grid fade-up">
@@ -579,12 +717,18 @@
               alt="Nature" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <div class="project-info">
-            <h3>Exploring the Green</h3>
-            <p>Exploring the green allows us to reconnect with nature and understand its true value. Green spaces like
-              parks, forests, and gardens provide peace, fresh air, and balance to our busy lives. They support
-              biodiversity, improve mental health, and encourage sustainable habits. When we explore the green, we learn
-              to respect the environment and protect it for future generations, making our planet healthier, more
-              beautiful, and more livable for everyone today and for generations to come..</p>
+            <div class="text-reveal-mask">
+              <h3 class="text-reveal-content">Exploring the Green</h3>
+            </div>
+            <div class="text-reveal-mask">
+              <p class="text-reveal-content">Exploring the green allows us to reconnect with nature and understand its
+                true value. Green spaces like
+                parks, forests, and gardens provide peace, fresh air, and balance to our busy lives. They support
+                biodiversity, improve mental health, and encourage sustainable habits. When we explore the green, we
+                learn
+                to respect the environment and protect it for future generations, making our planet healthier, more
+                beautiful, and more livable for everyone today and for generations to come..</p>
+            </div>
           </div>
         </article>
 
@@ -595,12 +739,17 @@
               alt="Student Life" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <div class="project-info">
-            <h3>Student Life in Biratnagar</h3>
-            <p>My name is Prasis Mainali, and I am from Biratnagar. I study at Biratnagar International College.
-              Biratnagar city has played an important role in shaping my behavior and personality. Living in this city
-              has taught me discipline, respect, and how to interact well with different people. The environment,
-              education, and culture of Biratnagar have helped me grow not only academically but also as a responsible
-              individual..</p>
+            <div class="text-reveal-mask">
+              <h3 class="text-reveal-content">Student Life in Biratnagar</h3>
+            </div>
+            <div class="text-reveal-mask">
+              <p class="text-reveal-content">My name is Prasis Mainali, and I am from Biratnagar. I study at Biratnagar
+                International College.
+                Biratnagar city has played an important role in shaping my behavior and personality. Living in this city
+                has taught me discipline, respect, and how to interact well with different people. The environment,
+                education, and culture of Biratnagar have helped me grow not only academically but also as a responsible
+                individual..</p>
+            </div>
           </div>
         </article>
 
@@ -611,13 +760,18 @@
               alt="Technology" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <div class="project-info">
-            <h3>Tech & Nature</h3>
-            <p>Technology and nature can work together to create a better future. Modern technology helps protect the
-              environment through renewable energy, smart farming, and wildlife conservation. At the same time, nature
-              inspires innovation and balance in human life. When technology is used responsibly, it reduces pollution
-              and saves resources. By combining technological progress with respect for nature, we can achieve
-              sustainable development, improve quality of life, and protect the Earth for future generations to enjoy
-              safely..</p>
+            <div class="text-reveal-mask">
+              <h3 class="text-reveal-content">Tech & Nature</h3>
+            </div>
+            <div class="text-reveal-mask">
+              <p class="text-reveal-content">Technology and nature can work together to create a better future. Modern
+                technology helps protect the
+                environment through renewable energy, smart farming, and wildlife conservation. At the same time, nature
+                inspires innovation and balance in human life. When technology is used responsibly, it reduces pollution
+                and saves resources. By combining technological progress with respect for nature, we can achieve
+                sustainable development, improve quality of life, and protect the Earth for future generations to enjoy
+                safely..</p>
+            </div>
           </div>
         </article>
 
@@ -628,11 +782,16 @@
               alt="Living Better" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
           <div class="project-info">
-            <h3>How can we live better</h3>
-            <p>Living better starts with mindfulness and connection. By prioritizing our mental health, nurturing our
-              relationships, and spending more time in nature, we can find a deeper sense of fulfillment. It's about
-              finding balance in our daily lives, making sustainable choices, and appreciating the simple moments that
-              bring us joy.</p>
+            <div class="text-reveal-mask">
+              <h3 class="text-reveal-content">How can we live better</h3>
+            </div>
+            <div class="text-reveal-mask">
+              <p class="text-reveal-content">Living better starts with mindfulness and connection. By prioritizing our
+                mental health, nurturing our
+                relationships, and spending more time in nature, we can find a deeper sense of fulfillment. It's about
+                finding balance in our daily lives, making sustainable choices, and appreciating the simple moments that
+                bring us joy.</p>
+            </div>
           </div>
         </article>
       </div>
@@ -657,6 +816,7 @@
     const hoverTargets = document.querySelectorAll('.hover-target');
 
     document.addEventListener('mousemove', (e) => {
+      // Smooth follow with requestAnimationFrame could be better, but this is fine for now
       cursor.style.left = e.clientX + 'px';
       cursor.style.top = e.clientY + 'px';
     });
@@ -672,19 +832,41 @@
 
     // --- Intersection Observer for Fade Up ---
     const observerOptions = {
-      threshold: 0.1
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px" // Trigger a bit earlier appearing from bottom
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible'); // Remove class to re-trigger animation on next scroll
         }
       });
     }, observerOptions);
 
     document.querySelectorAll('.fade-up').forEach(el => {
       observer.observe(el);
+    });
+
+    // Observe text reveal masks
+    document.querySelectorAll('.text-reveal-mask').forEach(el => {
+      observer.observe(el);
+    });
+
+    // --- Staggered Animations for Grids ---
+    // Automatically add stagger classes to children of grids if they don't have them
+    const staggerGrids = document.querySelectorAll('.project-grid, .experience-list, .about-grid');
+    staggerGrids.forEach(grid => {
+      const children = grid.children;
+      Array.from(children).forEach((child, index) => {
+        child.classList.add('fade-up');
+        // Cycle through delays 1-3 to prevent infinite delay growth on long lists
+        const delay = (index % 3) + 1;
+        child.classList.add(`stagger-delay-${delay}`);
+        observer.observe(child);
+      });
     });
   </script>
 
