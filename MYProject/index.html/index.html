@@ -204,13 +204,16 @@
       }
 
       .hero-image img {
-        width: 200px;
-        height: 200px;
+        width: 250px;
+        /* Increased size slightly */
+        height: 250px;
         margin-bottom: 20px;
       }
 
       .hero h1 {
         font-size: 3rem;
+        align-items: center;
+        /* Center align the flex column */
       }
     }
 
@@ -245,8 +248,8 @@
     .hero-subtitle-wrapper span {
       display: block;
       color: var(--text-secondary);
-      font-size: 0.5em;
-      /* relative to H1 */
+      font-size: 0.4em;
+      /* relative to H1 - Adjusted for global consistency */
       font-weight: 400;
       letter-spacing: 0;
       transform: translateY(100%);
@@ -610,8 +613,15 @@
         margin-top: 5px;
       }
 
-      .hero h1 span {
-        font-size: 0.4em;
+      /* Fix for "Prasis Mainali" being too small */
+      .hero h1 span.hero-subtitle-wrapper span {
+        font-size: 0.5em;
+        /* Keep subtitle small */
+      }
+
+      /* Ensure main title text (Prasis Mainali) uses the H1 font size */
+      .hero-title-row span {
+        font-size: inherit;
       }
     }
   </style>
