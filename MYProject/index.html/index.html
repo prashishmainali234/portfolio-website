@@ -649,7 +649,8 @@
     /* --- Secure Gallery --- */
     #secure-gallery {
       min-height: 80vh;
-      display: flex;
+      display: none;
+      /* Hide entirely on homepage initially */
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -778,7 +779,7 @@
         <a href="#about" class="hover-target">About</a>
         <a href="#experience" class="hover-target">Experience</a>
         <a href="#blog" class="hover-target">Blog</a>
-        <a href="#secure-gallery" class="hover-target">Gallery</a>
+        <a href="#secure-gallery" class="hover-target" id="nav-gallery-link">Gallery</a>
       </div>
 
       <div class="hamburger hover-target">
@@ -812,7 +813,7 @@
       </div>
 
       <div class="hero-image fade-up" style="transition-delay: 0.2s;">
-        <img src="../assets/images/prasis-profile.jpg" alt="Prasis Mainali">
+        <img src="assets/images/prasis-profile.jpg" alt="Prasis Mainali">
       </div>
     </header>
 
@@ -847,8 +848,7 @@
         </div>
 
         <div class="profile-img-container hover-target">
-          <!-- Using the parent directory path as fixed previously -->
-          <img src="../assets/images/prasis-profile.jpg" alt="Prasis Mainali">
+          <img src="assets/images/prasis-profile.jpg" alt="Prasis Mainali">
         </div>
       </div>
     </section>
@@ -1135,6 +1135,18 @@
       showGallery(cachedRole);
     }
 
+    // --- Supabase Keep Alive ---
+    // Pings the DB once per day to keep the Free Tier project awake
+    const lastPing = localStorage.getItem('supabase_last_ping');
+    const today = new Date().toDateString();
+
+    if (lastPing !== today) {
+      fetch("https://afpbaglqwfymryoaxrtf.supabase.co/rest/v1/", { method: "HEAD" })
+        .then(() => localStorage.setItem('supabase_last_ping', today))
+        .catch(() => { });
+    }
+
+
 
 
     loginBtn.addEventListener('click', () => {
@@ -1161,9 +1173,18 @@
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem(AUTH_KEY);
       hideGallery();
+
+      // Also hide the whole section to go back to homepage properly
+      document.getElementById('secure-gallery').style.display = 'none';
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     function showGallery(role) {
+      // The secureGallerySection is already defined globally and its display is set to 'flex' once.
+      // No need to redefine or set display: 'flex' repeatedly here.
+
       loginInterface.style.display = 'none';
       galleryInterface.style.display = 'block';
 
@@ -1200,6 +1221,22 @@
 
       renderGallery(data || [], role);
     }
+
+    // --- Navigation Gallery Reveal Logic ---
+    const navGalleryLink = document.getElementById('nav-gallery-link');
+    const secureGallerySection = document.getElementById('secure-gallery');
+
+    navGalleryLink.addEventListener('click', (e) => {
+      e.preventDefault(); // Prevent default jump immediately
+
+      // Reveal the gallery section
+      secureGallerySection.style.display = 'flex';
+
+      // Smooth scroll to the section
+      setTimeout(() => {
+        secureGallerySection.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    });
 
     function renderGallery(images, role) {
       // Just use the real images from Supabase
@@ -1265,7 +1302,7 @@
 
       try {
         // 1. Upload to Supabase Storage
-        const filename = `${Date.now()}_${file.name.replace(/\\s/g, '_')}`;
+        const filename = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
         const { data: uploadData, error: uploadError } = await supabaseClient.storage
           .from('gallery')
           .upload(filename, file);
@@ -1328,6 +1365,7 @@
         alert("Delete failed.");
       }
     }
+
   </script>
 
   <!-- Tawk.to Live Chat Script -->
